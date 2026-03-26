@@ -1,0 +1,29 @@
+[package]
+name = "mooncake-http-client"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "HTTP client for Mooncake Store - query key existence"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/yourusername/mooncake-http-client"
+keywords = ["mooncake", "cache", "kv-store", "http-client"]
+categories = ["api-bindings", "caching"]
+
+[dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+url = "2.5"
+log = "0.4"
+env_logger = "0.11"
+clap = { version = "4.5", features = ["derive"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+mockito = "1.2"
+
+[[bin]]
+name = "mooncake-http-client"
+path = "src/main.rs"
