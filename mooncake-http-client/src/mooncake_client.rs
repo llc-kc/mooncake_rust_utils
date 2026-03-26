@@ -90,13 +90,17 @@ pub struct KeyInfo {
     pub values: Option<Vec<ReplicaDescriptor>>,
 }
 
-/// Replica descriptor
+/// Replica descriptor (BufferDescriptor from server)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReplicaDescriptor {
-    #[serde(rename = "replicaId")]
-    pub replica_id: String,
-    #[serde(rename = "replicaType")]
-    pub replica_type: String,
+    #[serde(rename = "size_")]
+    pub size: u64,
+    #[serde(rename = "buffer_address_")]
+    pub buffer_address: u64,
+    #[serde(rename = "protocol_")]
+    pub protocol: String,
+    #[serde(rename = "transport_endpoint_")]
+    pub transport_endpoint: String,
 }
 
 /// Response from batch query keys endpoint
@@ -196,14 +200,15 @@ impl MooncakeClient {
             return Ok(HashMap::new());
         }
 
-        let url = self.base_url.join("/batch_query_keys")?;
         let keys_param = keys.join(",");
+        // Manually construct URL to avoid URL-encoding the commas in the keys parameter
+        let url_str = format!("{}?keys={}", self.base_url.join("/batch_query_keys")?, keys_param);
+        let url = Url::parse(&url_str)?;
         debug!("Batch checking keys [{}] at {}", keys_param, url);
 
         let response = self
             .http_client
             .get(url)
-            .query(&[("keys", &keys_param)])
             .send()
             .await?;
 
