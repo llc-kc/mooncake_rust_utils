@@ -2,6 +2,12 @@
 
 A command-line HTTP client for querying key existence in [Mooncake Store](https://github.com/kvcache-ai/Mooncake).
 
+You can check the results by:
+```
+curl -s "http://rpc_address:metrics_port/batch_query_keys?keys=key1,key2,key3"
+curl -s "http://rpc_address:metrics_port/get_all_keys"
+```
+
 ## Features
 
 - ✅ Check if a single key exists
